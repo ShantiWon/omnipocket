@@ -132,6 +132,7 @@ public class ConfirmOrder extends AppCompatActivity implements OrderAdapter.OnCa
         placeOrderBtn.setText("Processing...");
 
         JSONArray itemsArray = new JSONArray();
+        JSONArray cartIdsArray = new JSONArray();
         try {
             for (CartItem item : orderItems) {
                 JSONObject itemObj = new JSONObject();
@@ -139,6 +140,10 @@ public class ConfirmOrder extends AppCompatActivity implements OrderAdapter.OnCa
                 itemObj.put("qty", item.getQty());
                 itemObj.put("price", item.getPrice());
                 itemsArray.put(itemObj);
+
+                if (item.getCartId() > 0) {
+                    cartIdsArray.put(item.getCartId());
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,6 +187,7 @@ public class ConfirmOrder extends AppCompatActivity implements OrderAdapter.OnCa
                 params.put("user_id", String.valueOf(userId));
                 params.put("total_amount", String.valueOf(currentTotal));
                 params.put("items", itemsArray.toString());
+                params.put("cart_ids", cartIdsArray.toString());
                 return params;
             }
         };
